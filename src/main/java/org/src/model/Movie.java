@@ -3,9 +3,10 @@ package org.src.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table (name = "movie", schema = "postgres")
 public class Movie {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "imdbID")
     private short id;
 
@@ -18,6 +19,7 @@ public class Movie {
     @Column(name = "description")
     private String description;
 
+    @ManyToMany(mappedBy = "movie")
     @Column(name = "list_of_actors")
     private short[] actors;
 

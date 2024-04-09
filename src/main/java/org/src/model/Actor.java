@@ -1,28 +1,27 @@
 package org.src.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
+@Entity
+@Table (name = "actor", schema = "postgres")
 public class Actor {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private short id;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(name = "year")
-    private short year;
+    @Column(name = "last_name")
+    private String lastName;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "born_date")
+    private LocalDate bornDate;
 
-    @Column(name = "list_of_actors")
+    @ManyToMany (mappedBy = "actor")
+    @Column(name = "list_of_movies")
     private short[] actors;
-
-    @Column(name = "pictures")
-    private String[] pictures;
 }
