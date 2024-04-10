@@ -1,7 +1,7 @@
 package org.src.model;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.Json;
-import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.persistence.*;
@@ -9,13 +9,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table (name = "movie")
-public class Movie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "imdbID")
-    private Integer id;
-
+@Table(name = "movie")
+public class Movie extends PanacheEntity {
     @Column(name = "title")
     private String title;
 
@@ -25,34 +20,25 @@ public class Movie {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "movie_actor",
-            joinColumns = @JoinColumn (name = "movie_id"),
-            inverseJoinColumns = @JoinColumn (name = "actor_id")
-    )
-    private List<Actor> actors;
-
-    @Column(name = "pictures")
-    private String[] pictures;
-
-    public Movie(Integer id, String title, int year, String description, List<Actor> actors, String[] pictures) {
-        this.id = id;
-        this.title = title;
-        this.year = year;
-        this.description = description;
-        this.actors = actors;
-        this.pictures = pictures;
-    }
+    @Column(name = "picture")
+    private String picture;
 
     public Movie() {
     }
 
-    public Integer getId() {
+    public Movie(Long id, String title, int year, String description, List<Actor> actors, String picture) {
+        this.id = id;
+        this.title = title;
+        this.year = year;
+        this.description = description;
+        this.picture = picture;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -80,36 +66,33 @@ public class Movie {
         this.description = description;
     }
 
-    public List<Actor> getActors() {
-        return actors;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
-    }
-
-    public String[] getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(String[] pictures) {
-        this.pictures = pictures;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public static JsonObject toJson(Movie movie)
     {
-        JsonArrayBuilder picturesBuilder = Json.createArrayBuilder();
-        for (String picture : movie.getPictures())
-        {
-            picturesBuilder.add(picture);
-        }
         JsonObjectBuilder builder = Json.createObjectBuilder()
                 .add("id", movie.getId())
                 .add("title", movie.getTitle())
                 .add("year", movie.getYear())
                 .add("description", movie.getDescription())
-                .add("pictures", picturesBuilder);
+                .add("picture", movie.getPicture());
 
         return builder.build();
+    }
+    public static Movie jsonToMovie(JsonObject jsonObject)
+    {
+        Movie movie = new Movie();
+        movie.setTitle(jsonObject.getString("title"));
+        movie.setDescription(jsonObject.getString("description"));
+        movie.setYear(jsonObject.getInt("year"));
+        movie.setPicture(jsonObject.getString("picture"));
+
+        return movie;
     }
 }

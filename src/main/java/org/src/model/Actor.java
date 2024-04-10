@@ -1,22 +1,19 @@
 package org.src.model;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.json.Json;
-import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table (name = "actor")
-public class Actor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
+@Table(name = "actor")
+public class Actor extends PanacheEntity {
     @Column(name = "first_name")
     private String firstName;
 
@@ -26,25 +23,21 @@ public class Actor {
     @Column(name = "born_date")
     private LocalDate bornDate;
 
-    @ManyToMany (mappedBy = "actors")
-    private List<Movie> movies;
+    public Actor() {
+    }
 
-    public Actor(Integer id, String firstName, String lastName, LocalDate bornDate, List<Movie> movies) {
+    public Actor(Long id, String firstName, String lastName, LocalDate bornDate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.bornDate = bornDate;
-        this.movies = movies;
     }
 
-    public Actor() {
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,14 +65,6 @@ public class Actor {
         this.bornDate = bornDate;
     }
 
-    public List<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
-    }
-
     public static JsonObject toJson(Actor actor)
     {
         JsonObjectBuilder builder = Json.createObjectBuilder()
@@ -89,5 +74,15 @@ public class Actor {
                 .add("born_date", actor.getBornDate().toString());
 
         return builder.build();
+    }
+    public static Actor jsonToActor(JsonObject jsonObject)
+    {
+        Actor actor = new Actor();
+        LocalDate bornDate = LocalDate.parse(jsonObject.getString("born_date"), DateTimeFormatter.ISO_LOCAL_DATE);
+        actor.setFirstName(jsonObject.getString("first_name"));
+        actor.setLastName(jsonObject.getString("last_name"));
+        actor.setBornDate(bornDate);
+
+        return actor;
     }
 }
