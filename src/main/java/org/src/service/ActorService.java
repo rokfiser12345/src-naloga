@@ -44,4 +44,10 @@ public class ActorService {
         actorRepository.persist(actorToUpdate);
         return actor;
     }
+
+    @Transactional
+    public boolean deleteActor(Long actorId)
+    {
+        return actorRepository.deleteById(actorId);
+    }
 }

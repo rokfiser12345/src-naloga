@@ -8,24 +8,32 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.src.model.Actor;
 import org.src.model.Movie;
+import org.src.model.MovieActor;
+import org.src.repository.MovieActorRepository;
 import org.src.service.ActorService;
+import org.src.service.MovieActorService;
 
 import javax.print.attribute.standard.Media;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Path("/actor")
 public class ActorResource {
-    
+    @Inject
+    RestCallCounter restCallCounter;
     @Inject
     ActorService actorService;
+    @Inject
+    MovieActorService movieActorService;
 
     @GET
     @Path("/{actorId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getActorById(@PathParam("actorId") Long actorId)
     {
+        restCallCounter.incrementActorResourceCall();
         Actor actor = actorService.findActorById(actorId);
         if (actor != null)
         {
@@ -40,6 +48,7 @@ public class ActorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllActors()
     {
+        restCallCounter.incrementActorResourceCall();
         List<Actor> actors = actorService.listAllActors();
         if (!actors.isEmpty())
         {
@@ -59,6 +68,7 @@ public class ActorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createActor(JsonObject jsonBody)
     {
+        restCallCounter.incrementActorResourceCall();
         Actor actor = Actor.jsonToActor(jsonBody);
         actorService.createActor(actor);
         return Response.ok(Actor.toJson(actor)).build();
@@ -69,8 +79,32 @@ public class ActorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateActor(@PathParam("id") Long id, JsonObject jsonBody)
     {
+        restCallCounter.incrementActorResourceCall();
         Actor actor = Actor.jsonToActor(jsonBody);
         Actor updatedActor = actorService.updateActor(id, actor);
         return Response.ok(updatedActor).build();
+    }
+    @DELETE
+    @Path("/{id}")
+    public Response deleteActor(@PathParam("id") Long actorId)
+    {
+        restCallCounter.incrementActorResourceCall();
+        List<MovieActor> movieActors = movieActorService.findAll();
+        for (MovieActor movieActor : movieActors)
+        {
+            if (Objects.equals(movieActor.getActorId(), actorId))
+            {
+                movieActorService.deleteMovieActor(movieActor.getId());
+            }
+        }
+        boolean isDeleted = actorService.deleteActor(actorId);
+        if(isDeleted)
+        {
+            return Response.noContent().build();
+        }
+        else
+        {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }

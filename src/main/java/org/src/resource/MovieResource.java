@@ -15,11 +15,13 @@ import org.src.service.MovieService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Path("/movie")
 public class MovieResource
 {
-
+    @Inject
+    RestCallCounter restCallCounter;
     @Inject
     MovieService movieService;
 
@@ -30,6 +32,7 @@ public class MovieResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMovies()
     {
+        restCallCounter.incrementMovieResourceCall();
         List<Movie> movies = movieService.listAllMovies();
         if (!movies.isEmpty())
         {
@@ -48,6 +51,7 @@ public class MovieResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMovieByTitle(@PathParam("title") String title)
     {
+        restCallCounter.incrementMovieResourceCall();
         Movie movie = movieService.getMovieByTitle(title);
         if (movie != null)
         {
@@ -64,6 +68,7 @@ public class MovieResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMovieByPage(@PathParam("page") int page)
     {
+        restCallCounter.incrementMovieResourceCall();
         List<Movie> movies = movieService.getByPage(page);
         if (!movies.isEmpty())
         {
@@ -83,6 +88,7 @@ public class MovieResource
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNewMovie(JsonObject jsonBody)
     {
+        restCallCounter.incrementMovieResourceCall();
         Movie movie = Movie.jsonToMovie(jsonBody);
         JsonArray actors = jsonBody.getJsonArray("actors");
         Movie createdMovie = movieService.createMovie(movie);
@@ -100,6 +106,7 @@ public class MovieResource
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateMovie(@PathParam("id") Long id, JsonObject jsonBody)
     {
+        restCallCounter.incrementMovieResourceCall();
         Movie movie = Movie.jsonToMovie(jsonBody);
         JsonArray actors = jsonBody.getJsonArray("actors");
         Movie updatedMovie = movieService.updateMovie(id, movie);
@@ -110,5 +117,28 @@ public class MovieResource
                 movieActorService.createUpdateMovieActor(new MovieActor(updatedMovie.getId(),((JsonNumber) actorId).longValue()));
         }
         return Response.ok(updatedMovie).build();
+    }
+    @DELETE
+    @Path("/{id}")
+    public Response deleteMovie(@PathParam("id") Long movieId)
+    {
+        restCallCounter.incrementMovieResourceCall();
+        List<MovieActor> movieActors = movieActorService.findAll();
+        for (MovieActor movieActor : movieActors)
+        {
+            if (Objects.equals(movieActor.getMovieId(), movieId))
+            {
+                movieActorService.deleteMovieActor(movieActor.getId());
+            }
+        }
+        boolean isDeleted = movieService.deleteMovie(movieId);
+        if(isDeleted)
+        {
+            return Response.noContent().build();
+        }
+        else
+        {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }

@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.src.model.MovieActor;
 import org.src.repository.MovieActorRepository;
 
+import java.util.List;
+
 @ApplicationScoped
 public class MovieActorService {
     @Inject
@@ -25,5 +27,13 @@ public class MovieActorService {
             System.out.println("MovieActor relation already exists, skipping insert");
         }
         return movieActor;
+    }
+    @Transactional
+    public boolean deleteMovieActor(Long id)
+    {
+        return movieActorRepository.deleteById(id);
+    }
+    public List<MovieActor> findAll(){
+        return movieActorRepository.listAll();
     }
 }
