@@ -11,7 +11,8 @@ import java.util.List;
 
 
 @ApplicationScoped
-public class ActorService {
+public class ActorService
+{
 
     @Inject
     ActorRepository actorRepository;

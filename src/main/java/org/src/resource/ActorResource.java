@@ -7,20 +7,17 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.src.model.Actor;
-import org.src.model.Movie;
 import org.src.model.MovieActor;
-import org.src.repository.MovieActorRepository;
 import org.src.service.ActorService;
 import org.src.service.MovieActorService;
 
-import javax.print.attribute.standard.Media;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Path("/actor")
-public class ActorResource {
+public class ActorResource
+{
     @Inject
     RestCallCounter restCallCounter;
     @Inject
@@ -43,6 +40,7 @@ public class ActorResource {
         else
             return Response.status(Response.Status.NOT_FOUND).entity("No actor was found with provided ID").build();
     }
+
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -62,6 +60,7 @@ public class ActorResource {
         else
             return Response.status(Response.Status.NOT_FOUND).entity("There is no actors to be found").build();
     }
+
     @POST
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -73,6 +72,7 @@ public class ActorResource {
         actorService.createActor(actor);
         return Response.ok(Actor.toJson(actor)).build();
     }
+
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,6 +84,7 @@ public class ActorResource {
         Actor updatedActor = actorService.updateActor(id, actor);
         return Response.ok(updatedActor).build();
     }
+
     @DELETE
     @Path("/{id}")
     public Response deleteActor(@PathParam("id") Long actorId)

@@ -10,7 +10,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "movie")
-public class Movie extends PanacheEntity {
+public class Movie extends PanacheEntity
+{
     @Column(name = "title")
     private String title;
 
@@ -23,10 +24,12 @@ public class Movie extends PanacheEntity {
     @Column(name = "picture")
     private String picture;
 
-    public Movie() {
+    public Movie()
+    {
     }
 
-    public Movie(Long id, String title, int year, String description, List<Actor> actors, String picture) {
+    public Movie(Long id, String title, int year, String description, List<Actor> actors, String picture)
+    {
         this.id = id;
         this.title = title;
         this.year = year;
@@ -34,43 +37,53 @@ public class Movie extends PanacheEntity {
         this.picture = picture;
     }
 
-    public Long getId() {
+    public Long getId()
+    {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Long id)
+    {
         this.id = id;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public Integer getYear() {
+    public Integer getYear()
+    {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(Integer year)
+    {
         this.year = year;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public String getPicture() {
+    public String getPicture()
+    {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(String picture)
+    {
         this.picture = picture;
     }
 
@@ -85,6 +98,7 @@ public class Movie extends PanacheEntity {
 
         return builder.build();
     }
+
     public static Movie jsonToMovie(JsonObject jsonObject)
     {
         Movie movie = new Movie();

@@ -1,6 +1,5 @@
 package org.src.service;
 
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -10,7 +9,8 @@ import org.src.repository.MovieActorRepository;
 import java.util.List;
 
 @ApplicationScoped
-public class MovieActorService {
+public class MovieActorService
+{
     @Inject
     MovieActorRepository movieActorRepository;
 
@@ -23,7 +23,8 @@ public class MovieActorService {
             System.out.println("adding new one");
             movieActorRepository.persist(movieActor);
         }
-        else {
+        else
+        {
             System.out.println("MovieActor relation already exists, skipping insert");
         }
         return movieActor;
@@ -33,7 +34,8 @@ public class MovieActorService {
     {
         return movieActorRepository.deleteById(id);
     }
-    public List<MovieActor> findAll(){
+    public List<MovieActor> findAll()
+    {
         return movieActorRepository.listAll();
     }
 }

@@ -6,6 +6,6 @@ import org.src.model.Actor;
 
 
 @ApplicationScoped
-public class ActorRepository implements PanacheRepository<Actor> {
-
+public class ActorRepository implements PanacheRepository<Actor>
+{
 }

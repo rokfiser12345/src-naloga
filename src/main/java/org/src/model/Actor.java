@@ -8,12 +8,10 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "actor")
-public class Actor extends PanacheEntity {
+public class Actor extends PanacheEntity
+{
     @Column(name = "first_name")
     private String firstName;
 
@@ -23,45 +21,55 @@ public class Actor extends PanacheEntity {
     @Column(name = "born_date")
     private LocalDate bornDate;
 
-    public Actor() {
+    public Actor()
+    {
     }
 
-    public Actor(Long id, String firstName, String lastName, LocalDate bornDate) {
+    public Actor(Long id, String firstName, String lastName, LocalDate bornDate)
+    {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.bornDate = bornDate;
     }
 
-    public Long getId() {
+    public Long getId()
+    {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Long id)
+    {
         this.id = id;
     }
 
-    public String getFirstName() {
+    public String getFirstName()
+    {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName)
+    {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public String getLastName()
+    {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName)
+    {
         this.lastName = lastName;
     }
 
-    public LocalDate getBornDate() {
+    public LocalDate getBornDate()
+    {
         return bornDate;
     }
 
-    public void setBornDate(LocalDate bornDate) {
+    public void setBornDate(LocalDate bornDate)
+    {
         this.bornDate = bornDate;
     }
 
@@ -75,6 +83,7 @@ public class Actor extends PanacheEntity {
 
         return builder.build();
     }
+
     public static Actor jsonToActor(JsonObject jsonObject)
     {
         Actor actor = new Actor();
