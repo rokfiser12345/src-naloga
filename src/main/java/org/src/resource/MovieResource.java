@@ -10,7 +10,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.src.model.Movie;
 import org.src.model.MovieActor;
-import org.src.repository.MovieActorRepository;
 import org.src.service.MovieActorService;
 import org.src.service.MovieService;
 
@@ -91,8 +90,25 @@ public class MovieResource
         for(JsonValue actorId : actors)
         {
             if(actorId.getValueType() == JsonValue.ValueType.NUMBER)
-                movieActorService.createMovieActor(new MovieActor(createdMovie.getId(),((JsonNumber) actorId).longValue()));
+                movieActorService.createUpdateMovieActor(new MovieActor(createdMovie.getId(),((JsonNumber) actorId).longValue()));
         }
         return Response.ok(Movie.toJson(createdMovie)).build();
+    }
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateMovie(@PathParam("id") Long id, JsonObject jsonBody)
+    {
+        Movie movie = Movie.jsonToMovie(jsonBody);
+        JsonArray actors = jsonBody.getJsonArray("actors");
+        Movie updatedMovie = movieService.updateMovie(id, movie);
+
+        for(JsonValue actorId : actors)
+        {
+            if(actorId.getValueType() == JsonValue.ValueType.NUMBER)
+                movieActorService.createUpdateMovieActor(new MovieActor(updatedMovie.getId(),((JsonNumber) actorId).longValue()));
+        }
+        return Response.ok(updatedMovie).build();
     }
 }

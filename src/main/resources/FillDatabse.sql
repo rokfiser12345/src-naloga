@@ -25,19 +25,22 @@ INSERT INTO movie (id, description, title, year, picture) VALUES
 (10, 'A biographical film about a famous scientist', 'The Great Mind', 2018, 'famous_scientist.jpg');
 
 -- Creating relationships in movie_actor
-INSERT INTO movie_actor (movie_id, actor_id) VALUES
-(1, 1),
-(1, 2),
-(2, 3),
-(2, 4),
-(3, 5),
-(3, 6),
-(4, 7),
-(4, 8),
-(5, 9),
-(5, 10),
-(6, 1),
-(7, 2),
-(8, 3),
-(9, 4),
-(10, 5);
+INSERT INTO movie_actor (id, movie_id, actor_id) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 3),
+(4, 2, 4),
+(5, 3, 5),
+(6, 3, 6),
+(7, 4, 7),
+(8, 4, 8),
+(9, 5, 9),
+(10, 5, 10),
+(11, 6, 1),
+(12, 7, 2),
+(13, 8, 3),
+(14, 9, 4),
+(15, 10, 5),
+(16, 301, 1),
+(17, 301, 3),
+(18, 301, 4);

@@ -63,4 +63,14 @@ public class ActorResource {
         actorService.createActor(actor);
         return Response.ok(Actor.toJson(actor)).build();
     }
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateActor(@PathParam("id") Long id, JsonObject jsonBody)
+    {
+        Actor actor = Actor.jsonToActor(jsonBody);
+        Actor updatedActor = actorService.updateActor(id, actor);
+        return Response.ok(updatedActor).build();
+    }
 }

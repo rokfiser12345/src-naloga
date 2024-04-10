@@ -1,14 +1,11 @@
 package org.src.model;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "movie_actor")
-public class MovieActor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class MovieActor extends PanacheEntity {
 
     @Column(name = "movieId")
     private Long movieId;

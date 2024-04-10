@@ -18,18 +18,17 @@ DROP TABLE IF EXISTS movie;
     );
 
     create table movie_actor (
+        id bigint not null,
         movieId bigint not null,
-        actorId bigint not null
-    );
-
-    create table Movie_pictures (
-        Movie_id bigint not null,
-        picture varchar(255)
+        actorId bigint not null,
+        primary key (id)
     );
 
     create sequence actor_SEQ start with 1 increment by 50;
 
     create sequence movie_SEQ start with 1 increment by 50;
+
+    create sequence movie_actor_seq start with 1 increment by 50;
 
     alter table if exists movie_actor
        add constraint FK69qnqd5hnjn2aykvxcj72r9i5
@@ -39,9 +38,4 @@ DROP TABLE IF EXISTS movie;
     alter table if exists movie_actor
        add constraint FKhedvt8u16luotgyoel4fqy7t1
        foreign key (movie_id)
-       references movie;
-
-    alter table if exists Movie_pictures
-       add constraint FKk3ryarmro95o27iwq0vsnekbg
-       foreign key (Movie_id)
        references movie;

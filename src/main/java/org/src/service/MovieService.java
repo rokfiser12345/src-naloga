@@ -4,6 +4,7 @@ package org.src.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 import org.src.model.Movie;
 import org.src.repository.MovieRepository;
 
@@ -36,5 +37,21 @@ public class MovieService {
     {
         movieRepository.persist(movie);
         return movie;
+    }
+
+    @Transactional
+    public Movie updateMovie(Long id, Movie movie)
+    {
+        Movie movieToUpdate = movieRepository.findById(id);
+        if(movie == null)
+        {
+            throw new NotFoundException("Movie with id " + id + " not found");
+        }
+        movieToUpdate.setTitle(movie.getTitle());
+        movieToUpdate.setDescription(movie.getDescription());
+        movieToUpdate.setYear(movie.getYear());
+        movieToUpdate.setPicture(movie.getPicture());
+        movieRepository.persist(movieToUpdate);
+        return movieToUpdate;
     }
 }
