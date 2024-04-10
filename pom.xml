@@ -43,6 +43,11 @@
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkiverse.jpastreamer</groupId>
+            <artifactId>quarkus-jpastreamer</artifactId>
+            <version>3.0.3.Final</version>
+        </dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
         </dependency>
