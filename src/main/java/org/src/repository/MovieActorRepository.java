@@ -2,10 +2,8 @@ package org.src.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.src.model.Actor;
-
+import org.src.model.MovieActor;
 
 @ApplicationScoped
-public class ActorRepository implements PanacheRepository<Actor> {
-
+public class MovieActorRepository implements PanacheRepository<MovieActor> {
 }
